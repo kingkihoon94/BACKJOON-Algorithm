@@ -3,60 +3,55 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class BOJ_스타트와링크 {
-	static int[][] warms;
-	static boolean[] check;
+public class Main {
 	static int N;
-	static long min;
-	public static void main(String[] args) throws IOException{
+	static int[][] map;
+	static boolean[] visited;
+	static int min = Integer.MAX_VALUE;
+	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		int TC = Integer.parseInt(st.nextToken());
-		for(int test=1; test<=TC; test++) {
-			min = -1;
+		N = Integer.parseInt(st.nextToken());
+		map = new int[N][N];
+		visited = new boolean[N];
+		for(int i=0; i<N; i++) {
 			st = new StringTokenizer(br.readLine());
-			N = Integer.parseInt(st.nextToken());
-			warms =  new int[N][2];
-			check = new boolean[N];
-			for(int i=0; i<N; i++) {
-				st = new StringTokenizer(br.readLine());
-				warms[i][0] = Integer.parseInt(st.nextToken());
-				warms[i][1] = Integer.parseInt(st.nextToken());
-			}//end input.
-			dfs(0,0);
-			System.out.println("#" + test + " " + min);
-		}//end testCase.
+			for(int j=0; j<N; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}//end input.
+		dfs(0,0);
+		System.out.println(min);
+		
 	}//end main.
 	public static void dfs(int idx, int cnt) {
 		if(cnt == N/2) {
-			int move_x =0;
-			int move_y =0;
-			int x=0;
-			int y=0;
+			int[] team_a = new int[N/2];
+			int[] team_b = new int[N/2];
+			int top_a = -1;
+			int top_b = -1;
 			for(int i=0; i<N; i++) {
-				if(check[i]) {
-					move_x += warms[i][0];
-					move_y += warms[i][1];
+				if(visited[i]) {
+					team_a[++top_a] = i;
 				}
-				else {
-					x += warms[i][0];
-					y += warms[i][1];
+				else team_b[++top_b] = i;
+			}
+			int sum_a = 0;
+			int sum_b = 0;
+			for(int i=0; i<N/2; i++) {
+				for(int j=0; j<N/2; j++) {
+					sum_a += map[team_a[i]][team_a[j]];
+					sum_b += map[team_b[i]][team_b[j]];
 				}
-			}//합 다 구하기.
-			long temp = calculate(move_x - x , move_y - y);
-			if(min == -1) min = temp;
-			else if(min != -1 && temp < min) min = temp;
+			}
+			if(Math.abs(sum_a-sum_b) < min) min = Math.abs(sum_a-sum_b);
 			return ;
 		}
-		if(idx == N) return ;
-		for(int i=idx; i<N; i++) {
-			check[i] = true;
-			dfs(i+1, cnt+1);
-			check[i] = false;
+		if(idx==N) return;
+		for(int i=idx;i<N;i++) {
+			visited[i] = true;
+			dfs(i+1,cnt+1);
+			visited[i] = false;
 		}
-		return ;
-	}//end dfs.
-	public static long calculate(long x, long y) {
-		return x*x + y*y;
 	}
 }//end class.
