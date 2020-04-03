@@ -1,0 +1,75 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    static class Pos{
+        int x;
+        int y;
+        public Pos(int x, int y){
+            this.x = x;
+            this.y = y;
+        }
+    }//class Pos.
+    static char[][] map; 
+    static int N;
+    static int M;
+    public int solution(int m, int n, String[] board) {
+        N = m;
+        M = n;
+        map = new char[N][M];
+        int answer = 0;
+        for(int i=0; i<N; i++){
+            for(int j=0; j<M; j++){
+                map[i][j] = board[i].charAt(j);
+            }
+        }
+        while(true){
+            ArrayList<Pos> list = search(); //찾고.
+            if(list.size() == 0) break;
+            else{
+                for(int i=0; i<list.size(); i++){
+                    answer += remove(list.get(i)); //지우고.
+                }
+            }
+            move(); //옮겨.
+        }
+        return answer;
+    }//end solution.
+    public ArrayList<Pos> search(){
+        ArrayList<Pos> list = new ArrayList();
+        for(int i=0; i<N-1; i++){
+            for(int j=0; j<M-1; j++){
+                if(map[i][j] != '0' && map[i][j] == map[i+1][j] && map[i][j+1] == map[i+1][j+1] && map[i][j] == map[i+1][j+1]){
+                    list.add(new Pos(i,j));
+                }
+            }
+        }
+        return list;
+    }//end search.
+    public int remove(Pos p){
+        int cnt = 0;
+        for(int i=0; i<2; i++){
+            for(int j=0; j<2; j++){
+                if(map[p.x+i][p.y+j] != '0'){
+                    cnt++;
+                    map[p.x+i][p.y+j] = '0';
+                }
+            }
+        }
+        return cnt;
+    }//end remove;
+    public void move(){
+        for(int i=0; i<M; i++){ //0열부터 M-1열까지.
+            ArrayList list = new ArrayList();
+            for(int j=N-1; j>=0; j--){
+                if(map[j][i] != '0'){
+                    list.add(map[j][i]);
+                    map[j][i] = '0';
+                }
+            }//그 열의 문자 찾아서 밑에먼저 들어오게.
+            for(int j=0; j<list.size();j++){
+                map[N-1-j][i] = (char)list.get(j);
+            }
+        }
+    }//end move.
+}//end class.

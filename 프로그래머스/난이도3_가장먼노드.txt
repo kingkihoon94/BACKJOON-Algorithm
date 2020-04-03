@@ -1,0 +1,40 @@
+import java.util.*;
+import java.io.*;
+
+class Solution {
+    public int solution(int n, int[][] edge) {
+        int answer = 0;
+        ArrayList<Integer>[] list = new ArrayList[n+1]; //인접리스트 만들기.
+        boolean[] visited = new boolean[n+1];
+        int[] length = new int[n]; //길이 정보 담을거.
+        for(int i=1; i<=n; i++){
+            list[i] = new ArrayList<Integer>();
+        }//인접리스트 초기화.
+        for(int i=0; i<edge.length; i++){
+            int start = edge[i][0];
+            int end = edge[i][1];
+            list[start].add(end);
+            list[end].add(start);
+        }//간선 저장.
+        Queue<Integer> q = new LinkedList<>();
+        q.add(1); //1넣고 시작.
+        visited[1] = true;
+        int time = 0;
+        while(!q.isEmpty()){
+            int size = q.size();
+            length[time] += size;
+            for(int k=0; k<size; k++){
+                int num = q.poll();
+                for(int i=0; i<list[num].size(); i++){
+                    if(!visited[list[num].get(i)]){
+                        visited[list[num].get(i)] = true;
+                        q.add(list[num].get(i));
+                    }
+                }
+            }
+            time++;
+        }
+        answer = length[time-1];
+        return answer;
+    }
+}
