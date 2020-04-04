@@ -1,0 +1,24 @@
+class Solution {
+    static int[] num;
+    static int T;
+    static int N;
+    static int answer;
+    public int solution(int[] numbers, int target) {
+        num = numbers;
+        T = target;
+        N = numbers.length;
+        answer = 0;
+        start(0,0);
+        return answer;
+    }//end method.
+    public static void start(int prev, int cnt){
+        if(cnt == N){
+            if(prev == T) answer++;
+            return ;
+        }
+        int now = prev + num[cnt];
+        start(now,cnt+1);
+        now = prev - num[cnt];
+        start(now,cnt+1);
+    }//end start.
+}//end solution.

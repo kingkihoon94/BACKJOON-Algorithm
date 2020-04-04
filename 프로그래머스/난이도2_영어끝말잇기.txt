@@ -1,0 +1,24 @@
+import java.util.*;
+
+class Solution {
+    public int[] solution(int n, String[] words) {
+        int[] answer = {0,0};
+        int val = 0; //해쉬에서 밸류역할.
+        int idx = 1;
+        Map<String, Integer> map = new HashMap<>();
+        map.put(words[0] , val++); //하나 넣고 시작.
+        while(idx != words.length){
+            String prev = words[idx-1];
+            String now = words[idx];
+            if(prev.charAt(prev.length()-1) != now.charAt(0)) break;
+            if(!map.containsKey(now)) map.put(now, val++);
+            else break;
+            idx++;
+        }
+        if(idx != words.length){
+            answer[0] = idx%n + 1;
+            answer[1] = idx/n + 1;
+        }
+        return answer;
+    }
+}

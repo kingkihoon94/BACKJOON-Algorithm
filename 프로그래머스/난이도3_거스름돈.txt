@@ -1,0 +1,15 @@
+class Solution {
+    static int P = 1000000007;
+    public int solution(int n, int[] money) {
+        long[] dp = new long[n+1]; //0원부터 n원까지.
+        for(int i=0; i<=n; i+=money[0]){
+            dp[i] = 1; //처음 돈으로 줄수있는 경우들 넣어놓기.
+        }
+        for(int i=1; i<money.length; i++){
+            for(int j=money[i]; j<=n; j++){
+                dp[j] += (dp[j-money[i]])%P;
+            }
+        }
+        return (int)dp[n];
+    }//end main.
+}//end class.
