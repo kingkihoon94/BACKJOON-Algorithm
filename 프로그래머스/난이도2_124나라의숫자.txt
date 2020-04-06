@@ -1,0 +1,15 @@
+class Solution {
+  public String solution(int n) {
+      String answer = "";
+      while(n>0){
+            int tmp = n%3;
+            n/=3;
+            if(tmp == 0) {
+                tmp = 4;
+                n--;
+            }
+          answer = tmp + answer;
+      }
+      return answer;
+  }
+}
