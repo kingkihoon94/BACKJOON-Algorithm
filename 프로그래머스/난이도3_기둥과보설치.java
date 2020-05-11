@@ -1,10 +1,10 @@
-class Solution {
+ï»¿class Solution {
     static int N;
     static boolean[][][] map;
     static int cnt = 0;
     public int[][] solution(int n, int[][] build_frame) {
         N = n;
-        map = new boolean[N+3][N+3][2]; //0:±âµÕ, 1:º¸. + ¾ç¿· ºñ±³¶§¹®¿¡ ¹è¿­ È®Àå.
+        map = new boolean[N+3][N+3][2]; //0:ê¸°ë‘¥, 1:ë³´. + ì–‘ì˜† ë¹„êµë•Œë¬¸ì— ë°°ì—´ í™•ì¥.
         for(int i=0; i<build_frame.length; i++){
             //System.out.println(cnt);
             int dx = build_frame[i][0] + 1;
@@ -32,14 +32,14 @@ class Solution {
         return answer;
     }//end main.
     public static boolean can_make(int x, int y, int type){
-        if(type == 0){//±âµÕÀÏ¶§.
-            if(y == 1 || map[x][y-1][0] || map[x][y][1] || map[x-1][y][1]){//¹Ù´Ú + ±âµÕÀ§ + º¸À§ 2°¡Áö °¡´É.
+        if(type == 0){//ê¸°ë‘¥ì¼ë•Œ.
+            if(y == 1 || map[x][y-1][0] || map[x][y][1] || map[x-1][y][1]){//ë°”ë‹¥ + ê¸°ë‘¥ìœ„ + ë³´ìœ„ 2ê°€ì§€ ê°€ëŠ¥.
                 return true;
             }
             return false;
         }
-        else{//º¸ÀÏ¶§.
-            if(map[x][y-1][0] || map[x+1][y-1][0] || (map[x-1][y][1] && map[x+1][y][1])){ //±âµÕÀ§ 2°¡Áö + º¸»çÀÌ¿¡ °¡´É.
+        else{//ë³´ì¼ë•Œ.
+            if(map[x][y-1][0] || map[x+1][y-1][0] || (map[x-1][y][1] && map[x+1][y][1])){ //ê¸°ë‘¥ìœ„ 2ê°€ì§€ + ë³´ì‚¬ì´ì— ê°€ëŠ¥.
                return true;
             }
             return false;
@@ -50,11 +50,11 @@ class Solution {
         boolean can = true;
 ex:     for (int i = 1; i <= N + 1; i++) {
             for (int j = 1; j <= N + 1; j++) {
-                if (map[i][j][0] && !can_make(i, j, 0)) { //ÇöÀç ¼³Ä¡µÈ ±âµÕ + Á¶°Ç¼º¸³ X.
+                if (map[i][j][0] && !can_make(i, j, 0)) { //í˜„ì¬ ì„¤ì¹˜ëœ ê¸°ë‘¥ + ì¡°ê±´ì„±ë¦½ X.
                     can = false;
                     break ex;
                 }
-                if (map[i][j][1] && !can_make(i, j, 1)) { //ÇöÀç ¼³Ä¡µÈ º¸ + Á¶°Ç¼º¸³ X.
+                if (map[i][j][1] && !can_make(i, j, 1)) { //í˜„ì¬ ì„¤ì¹˜ëœ ë³´ + ì¡°ê±´ì„±ë¦½ X.
                     can = false;
                     break ex;
                 }

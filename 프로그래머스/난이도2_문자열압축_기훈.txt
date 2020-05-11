@@ -1,0 +1,38 @@
+class Solution {
+    public int solution(String s) {
+      int ans  =s.length();
+      for (int i = 1; i <= s.length()/2; i++) {
+         String A = s.substring(0,i);
+         int cnt = 1;
+         String al = "";
+         String B = "";
+         for (int j = i; j < s.length()-i+1; j+=i) {
+            B = s.substring(j,j+i);
+            if(A.equals(B)) {
+               cnt++;
+            }else {
+               if(cnt>1){
+                  al = al+cnt+A;
+                  A=B;
+                  cnt=1;
+               }else {
+                  al += A;
+                  A=B;
+                  
+               }
+            }
+            if(j+i>=s.length()-i+1) {
+               if(cnt!=1) {
+                  al+=cnt+A;
+               }
+               else al += A;
+               if(s.length()%i !=0){
+                   al += s.substring(j+i , s.length());
+               }
+            }
+         }
+         ans = Math.min(ans, al.length());
+      }
+        return ans;
+    }
+}

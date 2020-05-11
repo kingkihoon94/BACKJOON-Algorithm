@@ -1,0 +1,88 @@
+import java.util.*;
+
+class Solution {
+    static class Trie{
+        char c;
+        HashMap<Character, Trie> child = new HashMap<Character, Trie> ();
+        HashMap<Integer, Integer> length = new HashMap<Integer,Integer> ();
+        public Trie(char c){
+            this.c = c;
+        }
+        public Trie insert(Trie T, int len) {
+            if (!child.containsKey(T.c)) {
+                child.put(T.c, T);
+            }
+            if (length.containsKey(len)) {
+                length.put(len, length.get(len) + 1);
+            }
+            else {
+                length.put(len, 1);
+            }
+            return child.get(T.c);
+        }
+        public Trie find(char c) {
+            return child.get(c);
+        }
+        public int get_length(int len) {
+            if (length.containsKey(len)) return length.get(len);
+            else return 0;
+        }
+    }
+    public int[] solution(String[] words, String[] queries) {
+        int[] answer = new int[queries.length];
+        Trie root1 = new Trie('*');
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            Trie prev = root1;
+            for (int j = 0; j < word.length(); j++) {
+                char c = word.charAt(j);
+                Trie now = new Trie(c);
+                prev = prev.insert(now, word.length()); //계속 해당 문자의 루트 변환.
+            }
+        }//접두사 trie만들기.
+        Trie root2 = new Trie('*');
+        for (int i=0; i < words.length; i++) {
+            String word = words[i];
+            Trie prev = root2;
+            for (int j=word.length()-1; j>=0; j--) {
+                char c = word.charAt(j);
+                Trie now = new Trie(c);
+                prev = prev.insert(now, word.length()); //계속 해당 문자의 루트 변환.
+            }
+        }//접미사 trie만들기.
+        for(int i=0; i<queries.length; i++){
+            String tmp = queries[i];
+            int cnt = 0;
+            if(tmp.charAt(0) == '?'){ //접미사 비교.
+                Trie now = root2;
+                for (int j=tmp.length()-1; j>=0; j--) {
+                    if(tmp.charAt(j)=='?'){
+                        cnt = now.get_length(tmp.length());
+                        break;
+                    }
+                    now = now.find(tmp.charAt(j));
+                    if(now == null){
+                        cnt = 0;
+                        break;
+                    }
+                }
+            }
+            else{ // 접두사 비교
+                Trie now = root1;
+                for (int j=0; j<tmp.length(); j++) {
+                    if(tmp.charAt(j)=='?'){
+                        cnt = now.get_length(tmp.length());
+                        break;
+                    }
+                    now = now.find(tmp.charAt(j));
+                    if(now == null){
+                        cnt = 0;
+                        break;
+                    }
+                }
+            }
+            answer[i] = cnt;
+        }
+        return answer;
+    }
+}
